@@ -1,0 +1,22 @@
+@font-face{
+	font-family: Roboville;
+	src: url(roboville.otf);
+}
+*::selection{background:rgba(0,0,0,0)}
+*::-moz-selection{background:rgba(0,0,0,0)}
+
+body{
+background:#000;
+color:#666;
+font:normal 8pt/12pt Roboville, sans-serif;
+}
+a{color:#666}
+a:hover{color:#999}
+footer{
+text-align:center;
+}
+canvas{
+display:block;
+margin:8px auto;
+background:#012838 url(bg-grad.png) 0 0 repeat-x;
+}

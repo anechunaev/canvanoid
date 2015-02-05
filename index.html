@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Canvanoid</title>
+	<link type="text/css" rel="stylesheet" media="all" href="style.css" />
+</head>
+<body>
+	<canvas width="1024" height="768" id="cnv"></canvas>
+	<footer>
+		<p>Canvanoid on <a href="https://github.com/bungu/canvanoid" title="">GitHub</a></p>
+	</footer>
+	<script src="js/vector.js"></script>
+	<script src="js/helper.js"></script>
+	<script src="js/time.js"></script>
+	<script src="js/shapes.js"></script>
+	<script src="js/include.js"></script>
+	<script src="js/base.js"></script>
+	<script src="main.js"></script>
+	<script>
+
+var tileset = new Image();
+tileset.src = 'gfx.png';
+
+var showFPS = new Text({position: {x:4,y:12}, z:9});
+showFPS.Update = function(){
+	this.text = 'FPS: ' + Game.time.fps;
+}
+
+var brick102 = new Brick({image:tileset,position:{x:92,y:240},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick112 = new Brick({image:tileset,position:{x:92,y:264},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick122 = new Brick({image:tileset,position:{x:92,y:288},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick93 = new Brick({image:tileset,position:{x:118,y:216},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick133 = new Brick({image:tileset,position:{x:118,y:312},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick94 = new Brick({image:tileset,position:{x:142,y:216},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick134 = new Brick({image:tileset,position:{x:142,y:312},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick106 = new Brick({image:tileset,position:{x:190,y:240},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick116 = new Brick({image:tileset,position:{x:190,y:264},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick126 = new Brick({image:tileset,position:{x:190,y:288},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick136 = new Brick({image:tileset,position:{x:190,y:312},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick97 = new Brick({image:tileset,position:{x:214,y:216},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick127 = new Brick({image:tileset,position:{x:214,y:288},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick98 = new Brick({image:tileset,position:{x:238,y:216},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick108 = new Brick({image:tileset,position:{x:238,y:240},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick118 = new Brick({image:tileset,position:{x:238,y:264},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick128 = new Brick({image:tileset,position:{x:238,y:288},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick138 = new Brick({image:tileset,position:{x:238,y:312},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick910 = new Brick({image:tileset,position:{x:286,y:216},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1010 = new Brick({image:tileset,position:{x:286,y:240},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1110 = new Brick({image:tileset,position:{x:286,y:264},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1210 = new Brick({image:tileset,position:{x:286,y:288},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1310 = new Brick({image:tileset,position:{x:286,y:312},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick911 = new Brick({image:tileset,position:{x:310,y:216},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick912 = new Brick({image:tileset,position:{x:334,y:216},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1012 = new Brick({image:tileset,position:{x:334,y:240},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1112 = new Brick({image:tileset,position:{x:334,y:264},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1212 = new Brick({image:tileset,position:{x:334,y:288},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1312 = new Brick({image:tileset,position:{x:334,y:312},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick914 = new Brick({image:tileset,position:{x:382,y:216},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1014 = new Brick({image:tileset,position:{x:382,y:240},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1114 = new Brick({image:tileset,position:{x:382,y:264},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1214 = new Brick({image:tileset,position:{x:382,y:288},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1315 = new Brick({image:tileset,position:{x:406,y:312},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick916 = new Brick({image:tileset,position:{x:430,y:216},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1016 = new Brick({image:tileset,position:{x:430,y:240},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1116 = new Brick({image:tileset,position:{x:430,y:264},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1216 = new Brick({image:tileset,position:{x:430,y:288},color:"green", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1018 = new Brick({image:tileset,position:{x:478,y:240},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1118 = new Brick({image:tileset,position:{x:478,y:264},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1218 = new Brick({image:tileset,position:{x:478,y:288},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1318 = new Brick({image:tileset,position:{x:478,y:312},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick919 = new Brick({image:tileset,position:{x:502,y:216},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1219 = new Brick({image:tileset,position:{x:502,y:288},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick920 = new Brick({image:tileset,position:{x:526,y:216},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1020 = new Brick({image:tileset,position:{x:526,y:240},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1120 = new Brick({image:tileset,position:{x:526,y:264},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1220 = new Brick({image:tileset,position:{x:526,y:288},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1320 = new Brick({image:tileset,position:{x:526,y:312},color:"blue", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick922 = new Brick({image:tileset,position:{x:574,y:216},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1022 = new Brick({image:tileset,position:{x:574,y:240},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1122 = new Brick({image:tileset,position:{x:574,y:264},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1222 = new Brick({image:tileset,position:{x:574,y:288},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1322 = new Brick({image:tileset,position:{x:574,y:312},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick923 = new Brick({image:tileset,position:{x:598,y:216},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick924 = new Brick({image:tileset,position:{x:622,y:216},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1024 = new Brick({image:tileset,position:{x:622,y:240},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1124 = new Brick({image:tileset,position:{x:622,y:264},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1224 = new Brick({image:tileset,position:{x:622,y:288},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1324 = new Brick({image:tileset,position:{x:622,y:312},color:"violet", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick926 = new Brick({image:tileset,position:{x:670,y:216},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1026 = new Brick({image:tileset,position:{x:670,y:240},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1126 = new Brick({image:tileset,position:{x:670,y:264},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1226 = new Brick({image:tileset,position:{x:670,y:288},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1326 = new Brick({image:tileset,position:{x:670,y:312},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick927 = new Brick({image:tileset,position:{x:694,y:216},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1327 = new Brick({image:tileset,position:{x:694,y:312},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick928 = new Brick({image:tileset,position:{x:718,y:216},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1028 = new Brick({image:tileset,position:{x:718,y:240},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1128 = new Brick({image:tileset,position:{x:718,y:264},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1228 = new Brick({image:tileset,position:{x:718,y:288},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1328 = new Brick({image:tileset,position:{x:718,y:312},color:"red", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick930 = new Brick({image:tileset,position:{x:766,y:216},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1330 = new Brick({image:tileset,position:{x:766,y:312},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick931 = new Brick({image:tileset,position:{x:790,y:216},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1031 = new Brick({image:tileset,position:{x:790,y:240},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1131 = new Brick({image:tileset,position:{x:790,y:264},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1231 = new Brick({image:tileset,position:{x:790,y:288},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1331 = new Brick({image:tileset,position:{x:790,y:312},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick932 = new Brick({image:tileset,position:{x:814,y:216},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1332 = new Brick({image:tileset,position:{x:814,y:312},color:"orange", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick934 = new Brick({image:tileset,position:{x:862,y:216},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1034 = new Brick({image:tileset,position:{x:862,y:240},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1134 = new Brick({image:tileset,position:{x:862,y:264},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1234 = new Brick({image:tileset,position:{x:862,y:288},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+var brick1334 = new Brick({image:tileset,position:{x:862,y:312},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick935 = new Brick({image:tileset,position:{x:886,y:216},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:9});
+var brick1335 = new Brick({image:tileset,position:{x:886,y:312},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:13});
+var brick1036 = new Brick({image:tileset,position:{x:910,y:240},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:10});
+var brick1136 = new Brick({image:tileset,position:{x:910,y:264},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:11});
+var brick1236 = new Brick({image:tileset,position:{x:910,y:288},color:"yellow", brickSize:1,isBonusBrick:false,isBomb:false,dice:false,isMetal:false,z:12});
+
+var Button = function(options){
+	if(!isset(options.width)){options.width = 128}
+	if(!isset(options.inverted)){options.inverted = false}
+	
+	this.name = "button";
+	this.image = options.image;
+	this.position = options.position;
+	this.text = options.text;
+	this.width = options.width;
+	this.hover = false;
+	this.inverted = options.inverted;
+	this.ready = true;
+	this.level = options.level;
+	
+	this.Draw = function(ctx){
+		if(Game.mouse.position.x > this.position.x && Game.mouse.position.x <= this.position.x + this.width + 8 && Game.mouse.position.y > this.position.y && Game.mouse.position.y <= this.position.y + 32){
+			this.hover = true;
+			ctx.beginPath();
+			ctx.textAlign = "center";
+			ctx.font = "normal 18pt/20pt Roboville";
+			ctx.drawImage(this.image, 504, 129, 4, 32, this.position.x, this.position.y, 4, 32);
+			ctx.fillStyle = "#404040";
+			ctx.fillRect(this.position.x+4, this.position.y, this.width, 32);
+			ctx.drawImage(this.image, 508, 129, 4, 32, this.position.x + this.width + 4, this.position.y, 4, 32);
+			if(this.inverted){
+				ctx.fillStyle = "#000000";
+			} else {
+				ctx.fillStyle = "#FFFFFF";
+			}
+			ctx.fillText(this.text, this.position.x+this.width/2+4, this.position.y+24, 128);
+			ctx.closePath();
+		} else {
+			this.hover = false;
+			ctx.beginPath();
+			ctx.textAlign = "center";
+			ctx.font = "normal 18pt/20pt Roboville";
+			if(this.inverted){
+				ctx.fillStyle = "#FFFFFF";
+				ctx.drawImage(this.image, 520, 129, 4, 32, this.position.x, this.position.y, 4, 32);
+			} else {
+				ctx.fillStyle = "#000000";
+				ctx.drawImage(this.image, 488, 129, 4, 32, this.position.x, this.position.y, 4, 32);
+			}
+			ctx.fillRect(this.position.x+4, this.position.y, this.width, 32);
+			if(this.inverted){
+				ctx.fillStyle = "#000000";
+				ctx.drawImage(this.image, 524, 129, 4, 32, this.position.x + this.width + 4, this.position.y, 4, 32);
+			} else {
+				ctx.fillStyle = "#FFFFFF";
+				ctx.drawImage(this.image, 492, 129, 4, 32, this.position.x + this.width + 4, this.position.y, 4, 32);
+			}
+			ctx.fillText(this.text, this.position.x+this.width/2+4, this.position.y+24, 128);
+			ctx.closePath();
+		}
+	};
+	this.Update = function(){
+		if(localStorage.lastLevel >= this.level - 1 && localStorage.fail != "true"){
+			this.inverted = false;
+			this.text = this.level;
+		}
+		if(this.hover && Game.mouse.up && Game.mouse.button == 0 && this.ready){
+			this.ready = false;
+			this.Action();
+		} else {
+			this.ready = true;
+		}
+	};
+	this.Start = function(){};
+	this.Action = function(){};
+}
+var button1 = new Button({image:tileset,position:{x:448,y:384},text:"Start"});
+button1.Action = function(){
+	Game.LoadScene(sceneChooseLevel);
+};
+var button2 = new Button({image:tileset,position:{x:448,y:428},text:"Options"});
+button2.Action = function(){
+	alert("Work in progress");
+}
+var button3 = new Button({image:tileset,position:{x:448,y:470},text:"Editor"});
+button3.Action = function () {
+	window.location.href += "editor.html";
+}
+
+var blink = new Blink();
+
+var sceneMainMenu = {objects:[showFPS, brick102, brick112, brick122, brick93, brick133, brick94, brick134, brick106, brick116, brick126, brick136, brick97, brick127, brick98, brick108, brick118, brick128, brick138, brick910, brick1010, brick1110, brick1210, brick1310, brick911, brick912, brick1012, brick1112, brick1212, brick1312, brick914, brick1014, brick1114, brick1214, brick1315, brick916, brick1016, brick1116, brick1216, brick1018, brick1118, brick1218, brick1318, brick919, brick1219, brick920, brick1020, brick1120, brick1220, brick1320, brick922, brick1022, brick1122, brick1222, brick1322, brick923, brick924, brick1024, brick1124, brick1224, brick1324, brick926, brick1026, brick1126, brick1226, brick1326, brick927, brick1327, brick928, brick1028, brick1128, brick1228, brick1328, brick930, brick1330, brick931, brick1031, brick1131, brick1231, brick1331, brick932, brick1332, brick934, brick1034, brick1134, brick1234, brick1334, brick935, brick1335, brick1036, brick1136, brick1236, button1, button2, button3, blink], sources:[tileset]};
+
+
+
+var buttonC0 = new Button({image:tileset,position:{x:4,y:732},text:"Back"});
+buttonC0.Action = function(){
+	Game.LoadScene(sceneMainMenu);
+}
+
+var buttonL1 = new Button({image:tileset, position:{x:280, y:240}, width:32, text:"1", level: 1});
+buttonL1.Action = function(){
+	Loader.includeOnce('levels/1.js', false, function(){
+		StartLevel1();
+	});
+}
+var buttonL2 = new Button({image:tileset, position:{x:328, y:240}, width:32, text:"x", inverted: true, level: 2});
+buttonL2.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/2.js', false, function(){			
+			StartLevel2();
+		});
+	}
+}
+var buttonL3 = new Button({image:tileset, position:{x:376, y:240}, width:32, text:"x", inverted: true, level: 3});
+buttonL3.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/3.js', false, function(){			
+			StartLevel3();
+		});
+	}
+}
+var buttonL4 = new Button({image:tileset, position:{x:424, y:240}, width:32, text:"x", inverted: true, level: 4});
+buttonL4.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/4.js', false, function(){			
+			StartLevel4();
+		});
+	}
+}
+var buttonL5 = new Button({image:tileset, position:{x:472, y:240}, width:32, text:"x", inverted: true, level: 5});
+buttonL5.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/5.js', false, function(){			
+			StartLevel5();
+		});
+	}
+}
+var buttonL6 = new Button({image:tileset, position:{x:520, y:240}, width:32, text:"x", inverted: true, level: 6});
+buttonL6.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/6.js', false, function(){			
+			StartLevel6();
+		});
+	}
+}
+var buttonL7 = new Button({image:tileset, position:{x:568, y:240}, width:32, text:"x", inverted: true, level: 7});
+buttonL7.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/7.js', false, function(){			
+			StartLevel7();
+		});
+	}
+}
+var buttonL8 = new Button({image:tileset, position:{x:616, y:240}, width:32, text:"x", inverted: true, level: 8});
+buttonL8.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/8.js', false, function(){			
+			StartLevel8();
+		});
+	}
+}
+var buttonL9 = new Button({image:tileset, position:{x:664, y:240}, width:32, text:"x", inverted: true, level: 9});
+buttonL9.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/9.js', false, function(){			
+			StartLevel9();
+		});
+	}
+}
+var buttonL10 = new Button({image:tileset, position:{x:712, y:240}, width:32, text:"x", inverted: true, level: 10});
+buttonL10.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/10.js', false, function(){			
+			StartLevel10();
+		});
+	}
+}
+
+var buttonL11 = new Button({image:tileset, position:{x:280, y:288}, width:32, text:"x", inverted: true, level: 11});
+buttonL11.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/11.js', false, function(){			
+			StartLevel11();
+		});
+	}
+}
+var buttonL12 = new Button({image:tileset, position:{x:328, y:288}, width:32, text:"x", inverted: true, level: 12});
+buttonL12.Action = function(){
+	if(localStorage.lastLevel >= this.level - 1){
+		Loader.includeOnce('levels/12.js', false, function(){			
+			StartLevel12();
+		});
+	}
+}
+var buttonL13 = new Button({image:tileset, position:{x:376, y:288}, width:32, text:"x", inverted: true, level: 13});
+var buttonL14 = new Button({image:tileset, position:{x:424, y:288}, width:32, text:"x", inverted: true, level: 14});
+var buttonL15 = new Button({image:tileset, position:{x:472, y:288}, width:32, text:"x", inverted: true, level: 15});
+var buttonL16 = new Button({image:tileset, position:{x:520, y:288}, width:32, text:"x", inverted: true, level: 16});
+var buttonL17 = new Button({image:tileset, position:{x:568, y:288}, width:32, text:"x", inverted: true, level: 17});
+var buttonL18 = new Button({image:tileset, position:{x:616, y:288}, width:32, text:"x", inverted: true, level: 18});
+var buttonL19 = new Button({image:tileset, position:{x:664, y:288}, width:32, text:"x", inverted: true, level: 19});
+var buttonL20 = new Button({image:tileset, position:{x:712, y:288}, width:32, text:"x", inverted: true, level: 20});
+
+var buttonL21 = new Button({image:tileset, position:{x:280, y:336}, width:32, text:"x", inverted: true, level: 21});
+var buttonL22 = new Button({image:tileset, position:{x:328, y:336}, width:32, text:"x", inverted: true, level: 22});
+var buttonL23 = new Button({image:tileset, position:{x:376, y:336}, width:32, text:"x", inverted: true, level: 23});
+var buttonL24 = new Button({image:tileset, position:{x:424, y:336}, width:32, text:"x", inverted: true, level: 24});
+var buttonL25 = new Button({image:tileset, position:{x:472, y:336}, width:32, text:"x", inverted: true, level: 25});
+var buttonL26 = new Button({image:tileset, position:{x:520, y:336}, width:32, text:"x", inverted: true, level: 26});
+var buttonL27 = new Button({image:tileset, position:{x:568, y:336}, width:32, text:"x", inverted: true, level: 27});
+var buttonL28 = new Button({image:tileset, position:{x:616, y:336}, width:32, text:"x", inverted: true, level: 28});
+var buttonL29 = new Button({image:tileset, position:{x:664, y:336}, width:32, text:"x", inverted: true, level: 29});
+var buttonL30 = new Button({image:tileset, position:{x:712, y:336}, width:32, text:"x", inverted: true, level: 30});
+
+var buttonL31 = new Button({image:tileset, position:{x:280, y:384}, width:32, text:"x", inverted: true, level: 31});
+var buttonL32 = new Button({image:tileset, position:{x:328, y:384}, width:32, text:"x", inverted: true, level: 32});
+var buttonL33 = new Button({image:tileset, position:{x:376, y:384}, width:32, text:"x", inverted: true, level: 33});
+var buttonL34 = new Button({image:tileset, position:{x:424, y:384}, width:32, text:"x", inverted: true, level: 34});
+var buttonL35 = new Button({image:tileset, position:{x:472, y:384}, width:32, text:"x", inverted: true, level: 35});
+var buttonL36 = new Button({image:tileset, position:{x:520, y:384}, width:32, text:"x", inverted: true, level: 36});
+var buttonL37 = new Button({image:tileset, position:{x:568, y:384}, width:32, text:"x", inverted: true, level: 37});
+var buttonL38 = new Button({image:tileset, position:{x:616, y:384}, width:32, text:"x", inverted: true, level: 38});
+var buttonL39 = new Button({image:tileset, position:{x:664, y:384}, width:32, text:"x", inverted: true, level: 39});
+var buttonL40 = new Button({image:tileset, position:{x:712, y:384}, width:32, text:"x", inverted: true, level: 40});
+
+var buttonL41 = new Button({image:tileset, position:{x:280, y:432}, width:32, text:"x", inverted: true, level: 41});
+var buttonL42 = new Button({image:tileset, position:{x:328, y:432}, width:32, text:"x", inverted: true, level: 42});
+var buttonL43 = new Button({image:tileset, position:{x:376, y:432}, width:32, text:"x", inverted: true, level: 43});
+var buttonL44 = new Button({image:tileset, position:{x:424, y:432}, width:32, text:"x", inverted: true, level: 44});
+var buttonL45 = new Button({image:tileset, position:{x:472, y:432}, width:32, text:"x", inverted: true, level: 45});
+var buttonL46 = new Button({image:tileset, position:{x:520, y:432}, width:32, text:"x", inverted: true, level: 46});
+var buttonL47 = new Button({image:tileset, position:{x:568, y:432}, width:32, text:"x", inverted: true, level: 47});
+var buttonL48 = new Button({image:tileset, position:{x:616, y:432}, width:32, text:"x", inverted: true, level: 48});
+var buttonL49 = new Button({image:tileset, position:{x:664, y:432}, width:32, text:"x", inverted: true, level: 49});
+var buttonL50 = new Button({image:tileset, position:{x:712, y:432}, width:32, text:"x", inverted: true, level: 50});
+
+
+
+var Ball1 = new Ball({position:{x:512,y:32}, z:99});
+Ball1.fire = true;
+Ball1.onRacket = false;
+Ball1.immortal = true;
+Ball1.angle = 30;
+Ball1.speed = {x:8,y:8};
+
+var Ball2 = new Ball({position:{x:32,y:600}, z:99});
+Ball2.onRacket = false;
+Ball2.immortal = true;
+Ball2.angle = 45;
+Ball2.size = 6;
+
+var LevelController = {
+	position: {x:280, y:480},
+	Draw: function(ctx){
+		ctx.drawImage(tileset, 488, 129, 4, 32, this.position.x, this.position.y, 4, 32);
+		ctx.fillStyle = "#000000";
+		ctx.fillRect(this.position.x+4, this.position.y, 464, 32);
+		ctx.drawImage(tileset, 492, 129, 4, 32, this.position.x+468, this.position.y, 4, 32);
+		ctx.fillStyle = "#FFFFFF";
+		ctx.textAlign = "left";
+		ctx.font = "normal 18pt/20pt Roboville";
+		ctx.fillText("High score: " + localStorage.highscore, this.position.x+8, this.position.y+24, 464);
+	},
+	Start: function(){},
+	Update: function(){
+		if(!isset(localStorage.highscore)){
+			localStorage.highscore = 0;
+		}
+		if(Number(localStorage.points) > Number(localStorage.highscore)){
+			localStorage.highscore = localStorage.points;
+		}
+		if(localStorage.fail === "true"){
+			localStorage.lifes = 3;
+			localStorage.points = 0;
+		}
+	}
+}
+
+var sceneChooseLevel = {objects:[showFPS, buttonC0, buttonL1, buttonL2, buttonL3, buttonL4, buttonL5, buttonL6, buttonL7, buttonL8, buttonL9, buttonL10, buttonL11, buttonL12, buttonL13, buttonL14, buttonL15, buttonL16, buttonL17, buttonL18, buttonL19, buttonL20, buttonL21, buttonL22, buttonL23, buttonL24, buttonL25, buttonL26, buttonL27, buttonL28, buttonL29, buttonL30, buttonL31, buttonL32, buttonL33, buttonL34, buttonL35, buttonL36, buttonL37, buttonL38, buttonL39, buttonL40, buttonL41, buttonL42, buttonL43, buttonL44, buttonL45, buttonL46, buttonL47, buttonL48, buttonL49, buttonL50, Ball1, Ball2, LevelController], sources:[tileset]};
+
+window.onload = function(){
+	Game.Run({scene : sceneMainMenu});
+}
+	</script>
+</body>
+</html>

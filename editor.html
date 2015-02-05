@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Canvanoid</title>
+	<link type="text/css" rel="stylesheet" media="all" href="style.css" />
+</head>
+<body>
+	<canvas width="800" height="600" id="cnv"></canvas>
+	<footer>
+		<p>Canvanoid on <a href="" title="">GitHub</a></p>
+	</footer>
+	<script src="js/vector.js"></script>
+	<script src="js/helper.js"></script>
+	<script src="js/time.js"></script>
+	<script src="js/shapes.js"></script>
+	<script src="js/base.js"></script>
+	<script>
+var tileset = new Image();
+tileset.src = 'gfx.png';
+
+var level = new Array();
+for(var i = 0; i < 46; i++){
+	level[i] = new Array();
+	for(var j = 0; j < 28; j++){
+		level[i][j] = 0;
+	}
+}
+
+var props = {size:2, color:"255,0,0", isMetal:false, isBonus:false, bonus:1, isBonusBrick:false, isBomb:false, health:1, dice:false, position:{x:0,y:0}};
+var clear = false;
+
+var grid = {
+	Draw:		function(ctx){
+					ctx.lineWidth = 1;
+					ctx.strokeStyle="rgba(55,55,55,0.2)";
+					ctx.beginPath();
+					for(var i = 0; i < 488; i += 12){
+						ctx.moveTo(17+i+0.5,0);
+						ctx.lineTo(17+i+0.5,336);
+						//ctx.stroke();
+					}
+					for(var i = 0; i < 340; i += 12){
+						ctx.moveTo(0,i+0.5);
+						ctx.lineTo(512,i+0.5);
+						//ctx.stroke();
+					}
+					ctx.stroke();
+					ctx.closePath();
+					ctx.beginPath();
+					ctx.rect(0.5,0.5,512,336);
+					ctx.strokeStyle = "#999999";
+					ctx.stroke();
+					ctx.closePath();
+					
+					if(Game.mouse.position.x < 524 && Game.mouse.position.y < 336){
+						var x = 12*Math.floor(Game.mouse.position.x/12) - 7;
+						var y = 12*Math.floor(Game.mouse.position.y/12);
+						ctx.beginPath();
+						ctx.lineWidth = 3;
+						ctx.rect(x+0.5,y+0.5,12*props.size,12);
+						ctx.strokeStyle = "#FFFFFF";
+						ctx.fillStyle = "rgb("+props.color+")";
+						ctx.stroke();
+						ctx.fill();
+						ctx.closePath();
+					}
+				},
+	Update:		function(){
+					if(Game.mouse.button == 0 && Game.mouse.up && Game.mouse.position.x < 524 && Game.mouse.position.y < 336){
+						if(clear){
+							level[Math.floor(Game.mouse.position.x/12)][Math.floor(Game.mouse.position.y/12)] = 0;
+						} else {
+							var x = 12*props.size*Math.floor(Game.mouse.position.x/12);
+							var y = 12*Math.floor(Game.mouse.position.y/12);
+							level[Math.floor(Game.mouse.position.x/12)][Math.floor(Game.mouse.position.y/12)] = {size:props.size, color:props.color, isMetal:props.isMetal, isBonus:props.isBonus, bonus:props.bonus, isBonusBrick:props.isBonusBrick, isBomb:props.isBomb, health:props.health, dice:props.dice, position:{x:x*2*(1/props.size),y:y*2}};
+						}
+					}
+				},
+	Start:		function(){}
+}
+
+var Button = function(options){
+	if(!isset(options.position)){options.position = {x:0,y:0}}
+	if(!isset(options.size)){options.size = {x:96,y:30}}
+	if(!isset(options.text)){options.text = "Button"}
+	if(!isset(options.font)){options.font = "bold 12px/14px sans-serif"}
+	if(!isset(options.z)){options.z = 2}
+	if(!isset(options.isTrigger)){options.isTrigger = false}
+	if(!isset(options.group)){options.group = 0}
+	
+	this.name = "button";
+	this.position = options.position;
+	this.size = options.size;
+	this.text = options.text;
+	this.z = options.z;
+	this.font = options.font;
+	this.trigger = false;
+	this.isTrigger = options.isTrigger;
+	this.group = options.group;
+	this.fill = "#999999";
+	this.fillHover = "#AAAAAA";
+	this.fillPressed = "#999999";
+	this.textColor = "#000000";
+	this.borderLight = "#FFFFFF";
+	this.borderShadow = "#333333";
+	this.onButtonDown = false;
+	this.onButtonUp = false;
+	this.onButtonHover = false;
+	
+	this.Draw = function(ctx){
+		ctx.lineWidth = 2;
+		ctx.beginPath();
+		if(this.onButtonDown){
+			ctx.fillStyle = this.fillPressed;
+		} else {
+			if(this.onButtonHover){
+				ctx.fillStyle = this.fillHover;
+			} else {
+				ctx.fillStyle = this.fill;
+			}
+		}
+		ctx.rect(this.position.x, this.position.y, this.size.x, this.size.y);
+		ctx.fill();
+		ctx.closePath();
+		ctx.beginPath();
+		if(this.onButtonDown){
+			ctx.strokeStyle = this.borderShadow;
+		} else {
+			ctx.strokeStyle = this.borderLight;
+		}
+		ctx.moveTo(this.position.x, this.position.y+this.size.y);
+		ctx.lineTo(this.position.x, this.position.y);
+		ctx.lineTo(this.position.x+this.size.x, this.position.y);
+		ctx.stroke();
+		ctx.closePath();
+		ctx.beginPath();
+		if(this.onButtonDown){
+			ctx.strokeStyle = this.borderLight;
+		} else {
+			ctx.strokeStyle = this.borderShadow;
+		}
+		ctx.moveTo(this.position.x, this.position.y+this.size.y);
+		ctx.lineTo(this.position.x+this.size.x, this.position.y+this.size.y);
+		ctx.lineTo(this.position.x+this.size.x, this.position.y);
+		ctx.stroke();
+		ctx.closePath();
+		ctx.beginPath();
+		ctx.font = this.font;
+		ctx.fillStyle = this.textColor;
+		if(this.onButtonDown){
+			ctx.fillText(this.text, this.position.x + 10, this.position.y+20, this.size.x-20);
+		} else {
+			ctx.fillText(this.text, this.position.x + 8, this.position.y+18, this.size.x-20);
+		}
+		ctx.closePath();
+	}
+	
+	this.Update = function(){
+		this.onButtonHover = false;
+		this.onButtonUp = false;
+		if(Game.mouse.position.x > this.position.x && Game.mouse.position.x <= this.position.x + this.size.x && Game.mouse.position.y > this.position.y && Game.mouse.position.y <= this.position.y + this.size.y){this.onButtonHover = true} else {if(!this.trigger){this.onButtonDown = false}}
+		if(this.onButtonHover && Game.mouse.down){this.onButtonDown = true}
+		if(this.isTrigger && this.trigger){this.onButtonDown = true}
+		if(this.onButtonHover && Game.mouse.up){this.onButtonUp = true; if(!this.isTrigger){this.onButtonDown = false}}
+		if(this.onButtonUp){
+			if(this.isTrigger){
+				this.trigger = !this.trigger;
+				/*for(var i in Game.scene.objects){
+					var a = Game.scene.objects[i];
+					if(a.name == "button" && a.isTrigger && this.trigger && a.group == this.group){
+						a.trigger = false;
+					}
+				}*/
+			}
+			this.Action();
+		}
+	}
+	
+	this.Start = function(){}
+	this.Action = function(){}
+}
+var button1 = new Button({position: { x: 560, y: 24 }, size: { x: 96, y: 30 }, group:1, text: "Red"});
+button1.Action = function(){props.color = "255,0,0"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button2 = new Button({position: { x: 560, y: 56 }, size: { x: 96, y: 30 }, group:1, text: "Orange"});
+button2.Action = function(){props.color = "255,138,0"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button3 = new Button({position: { x: 560, y: 88 }, size: { x: 96, y: 30 }, group:1, text: "Yellow"});
+button3.Action = function(){props.color = "255,198,0"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button4 = new Button({position: { x: 560, y: 120 }, size: { x: 96, y: 30 }, group:1, text: "Green"});
+button4.Action = function(){props.color = "114,201,0"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button5 = new Button({position: { x: 560, y: 152 }, size: { x: 96, y: 30 }, group:1, text: "Blue"});
+button5.Action = function(){props.color = "0,162,255"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button6 = new Button({position: { x: 560, y: 184 }, size: { x: 96, y: 30 }, group:1, text: "Violet"});
+button6.Action = function(){props.color = "168,0,255"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+var button7 = new Button({position: { x: 560, y: 216 }, size: { x: 96, y: 30 }, group:1, text: "Grey"});
+button7.Action = function(){props.color = "147,147,147"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+
+var button8 = new Button({position: { x: 660, y: 24 }, size: { x: 96, y: 30 }, group:2, text: "Wide"});
+button8.Action = function(){props.size = 2}
+var button9 = new Button({position: { x: 660, y: 56 }, size: { x: 96, y: 30 }, group:2, text: "Tiny"});
+button9.Action = function(){props.size = 1}
+
+var button10 = new Button({position: { x: 560, y: 256 }, size: { x: 96, y: 30 }, isTrigger:true, text: "Clear"});
+button10.Action = function(){clear = this.trigger; props.color = "0,0,0"}
+
+var button11 = new Button({position: { x: 560, y: 296 }, size: { x: 96, y: 30 }, text: "Bonus"});
+button11.Action = function(){props.isBonusBrick = true; props.isMetal = true; props.isBomb = false; props.color = "255,255,255"; props.size = 1; props.dice = false}
+var button12 = new Button({position: { x: 560, y: 336 }, size: { x: 96, y: 30 }, text: "Bomb"});
+button12.Action = function(){clear = this.trigger; props.color = "99,99,0"; props.size = 1; props.isBomb = true; props.isBonusBrick = false; props.isMetal = false; props.dice = false}
+
+var button13 = new Button({position: { x: 560, y: 376 }, size: { x: 96, y: 30 }, text: "Get code"});
+button13.Action = function(){
+	var str1 = "";
+	var str2 = "";
+	var bricks = 0;
+	for(var i in level){
+		for(var j in level[i]){
+			if(level[i][j] != 0){
+				var a = level[i][j];
+				var color = "";
+				switch(a.color){
+				case "255,0,0":
+					color = "red";
+					break;
+				case "255,138,0":
+					color = "orange";
+					break;
+				case "255,198,0":
+					color = "yellow";
+					break;
+				case "114,201,0":
+					color = "green";
+					break;
+				case "0,162,255":
+					color = "blue";
+					break;
+				case "168,0,255":
+					color = "violet";
+					break;
+				case "147,147,147":
+					color = "grey";
+					break;
+				}
+				color = "color:\""+color+"\", ";
+				if(a.isMetal || a.dice){
+					color="";
+				}
+				if(!a.isMetal && !a.isBonusBrick){
+					bricks++;
+				}
+				str1 += "var brick"+j+i+" = new Brick({image:tileset,position:{x:"+(a.position.x-24)+",y:"+a.position.y+"},"+color+"brickSize:"+a.size+",isBonusBrick:"+a.isBonusBrick+",isBomb:"+a.isBomb+",dice:"+a.dice+",isMetal:"+a.isMetal+",z:"+j+"});\n"
+				str2 += "brick"+j+i+", ";
+			}
+		}
+		if(i >= level.length - 1){
+			console.log("var StartLevel1 = function(){\n	var mainObj = new MainObject({bricks:"+bricks+"});\n	mainObj.level = 1;\n\n"+str1+"\n\nvar rack = new Racket({image:tileset, position:512, width:96, z:98});\n\nvar ball = new Ball({position:{x:0, y:0}, z:97});\n\nvar levelgui = new GUI({image:tileset});\n\nvar scene1 = {objects:[blink, mainObj, showFPS, "+str2+"ball, rack, levelgui], sources:[tileset]};\n\nGame.LoadScene(scene1);\n};");
+		}
+	}
+}
+
+var button14 = new Button({position: { x: 660, y: 296 }, size: { x: 96, y: 30 }, text: "Metal"});
+button14.Action = function(){props.isBonusBrick = false; props.isBomb = false; props.color = "200,200,255"; props.size = 2; props.isMetal = true; props.dice = false}
+var button15 = new Button({position: { x: 660, y: 336 }, size: { x: 96, y: 30 }, text: "Dice"});
+button15.Action = function(){clear = this.trigger; props.color = "99,99,99"; props.isBomb = false; props.isBonusBrick = false; props.isMetal = false; props.dice=true}
+
+var map = {
+	Draw: 		function(ctx){
+					for(var i in level){
+						for(var j in level[i]){
+							if(level[i][j] != 0){
+								ctx.beginPath();
+								ctx.lineWidth=1;
+								ctx.strokeStyle="#000000";
+								ctx.fillStyle = "rgb("+level[i][j].color+")";
+								ctx.rect(i*12-7,j*12,level[i][j].size*12, 12);
+								ctx.stroke();
+								ctx.fill();
+								ctx.closePath();
+							}
+						}
+					}
+				},
+	Update:		function(){
+					
+				},
+	Start:		function(){}
+}
+
+var showFPS = new Text({position: {x:600,y:12}, z:9});
+showFPS.Update = function(){
+	this.text = 'FPS: ' + Game.time.fps + ' X: ' + Game.mouse.position.x + ' Y: ' + Game.mouse.position.y;
+}
+
+
+var scene1 = {objects:[map, grid, button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, button13,  button14, button15, showFPS], sources:[tileset]};
+
+window.onload = function(){
+	Game.Run({scene : scene1});
+}
+	</script>
+</body>
+</html>
