@@ -41,8 +41,8 @@ var Game = {
 		// Mouse input
 		this.mouse = {position:{x:0, y:0}, button:0, down:false, up:false};
 		this.cnv.addEventListener('mousemove', function(e){
-			Game.mouse.position.x = e.layerX - e.target.offsetLeft;
-			Game.mouse.position.y = e.layerY - e.target.offsetTop;
+			Game.mouse.position.x = e.clientX - e.target.offsetLeft;
+			Game.mouse.position.y = e.clientY - e.target.offsetTop;
 		}, false);
 		this.cnv.addEventListener('mousedown', function(e){
 			Game.mouse.button = e.button;
